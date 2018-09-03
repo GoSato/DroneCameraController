@@ -1,0 +1,19 @@
+<textarea id="content"></textarea><br>
+    <button id="download">ダウンロード</button>
+
+    <script>
+      var btn = document.getElementById('download');
+      btn.addEventListener('click', function(){
+        //var content = 'test';
+        //let blob = new Blob([content]);
+        //let testURL = window.URL.createObjectURL(blob);
+        let testURL = document.getElementById('content').value;
+        console.log(testURL);
+        let a = document.createElement('a');
+        a.href = testURL;
+        a.download = 'content.webm';
+        document.body.appendChild(a);
+        a.click();
+        a.parentNode.removeChild(a);
+      });
+    </script>
