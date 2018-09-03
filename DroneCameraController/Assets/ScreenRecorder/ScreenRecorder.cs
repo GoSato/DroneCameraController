@@ -11,6 +11,7 @@ namespace NatCorderU.Examples
     using System.Collections;
     using Core;
     using Core.Recorders;
+    using UnityEngine.Video;
 
     public class ScreenRecorder : MonoBehaviour
     {
@@ -79,6 +80,7 @@ namespace NatCorderU.Examples
         {
             Debug.Log("Saved recording to: " + path);
             // Playback the video
+            
 #if UNITY_IOS
             Handheld.PlayFullScreenMovie("file://" + path);
 #elif UNITY_ANDROID
