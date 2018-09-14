@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Runtime.InteropServices;
 
-public class TestLoader : MonoBehaviour
+public class Recorder : MonoBehaviour
 {
     [DllImport("__Internal")]
     private static extern void LoadRecorder();
 
     public void CallLoadRecorder()
     {
-        Debug.Log("OnClick");
+#if UNITY_WEBGL && !UNITY_EDITOR
+        Debug.Log("Load Recorder Button.");
         LoadRecorder();
+#endif
     }
 }

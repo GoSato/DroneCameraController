@@ -106,7 +106,7 @@ $WebRecord: {
 		  document.body.appendChild(a);
 		  a.click();
 		  
-		  setTimeout(removeInpl, 100);
+		  setTimeout(removeImpl, 100);
 		}
 
 		function removeImpl()
