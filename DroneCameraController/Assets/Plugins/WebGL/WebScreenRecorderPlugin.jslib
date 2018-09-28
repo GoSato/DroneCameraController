@@ -76,13 +76,13 @@ var WebRecordPlugin =
 			}
 
 			// for STYLY Audio
-			var audioList = document.querySelectorAll('audio');
+			// var audioList = document.querySelectorAll('audio');
 
-			for (var i = 0; i < audioInstances.length; i++) {
-				if (audioInstances[i].gain != null) {
-					audioInstances[i].gain.connect(WebRecord.destination);
-				}
-			}
+			// for (var i = 0; i < audioInstances.length; i++) {
+			//	if (audioInstances[i].gain != null) {
+			//		audioInstances[i].gain.connect(WebRecord.destination);
+			//	}
+			// }
 
 			WebRecord.oscillator = WebRecord.audioContext.createOscillator();
 			WebRecord.oscillator.connect(WebRecord.destination);
