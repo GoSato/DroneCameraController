@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 衛星軌道でカメラを自動で動かす
+/// </summary>
+[RequireComponent(typeof(Camera))]
 public class AutoOrbitCameraController : MonoBehaviour
 {
     public enum CameraDirectionMode
@@ -10,10 +14,6 @@ public class AutoOrbitCameraController : MonoBehaviour
         LookAtOutside,  // 被写体の正反対側にカメラを向ける
         Manual,         // カメラの向きを角度で指定する
     }
-
-    [Tooltip("被写体となるオブジェクト")]
-    [SerializeField]
-    private Transform _target;
 
     [SerializeField]
     private CameraDirectionMode _cameraDirectionMode = CameraDirectionMode.LookAtTarget;
@@ -37,17 +37,17 @@ public class AutoOrbitCameraController : MonoBehaviour
     [Tooltip("カメラの高さ調整")]
     [SerializeField]
     private float _height = 0.0f;
-    
+
+    private Transform _target;
     private Camera _camera;
     private float _initialHeight;
 
-    private void Start()
+    private void OnEnable()
     {
-        _camera = GetComponentInChildren<Camera>();
+        _camera = GetComponent<Camera>();
+        _target = new GameObject("Camera Target").transform;
         _initialHeight = transform.position.y;
         _radius = Vector3.Distance(_target.transform.position, transform.position);
-
-        _target = new GameObject("Camera Target").transform;
     }
 
     private void Update()
@@ -56,7 +56,7 @@ public class AutoOrbitCameraController : MonoBehaviour
 
         if (_radius > 0.0f)
         {
-            var targetToCamera = (_camera.transform.position - _target.position).normalized;
+            var targetToCamera = (transform.position - _target.position).normalized;
             var cameraPos = _target.position + targetToCamera * _radius;
             transform.position = cameraPos;
         }
@@ -74,13 +74,18 @@ public class AutoOrbitCameraController : MonoBehaviour
                 _camera.transform.LookAt(_target);
                 break;
             case CameraDirectionMode.LookAtOutside:
-                var direction = _target.position - _camera.transform.position;
-                var target = _camera.transform.position - direction;
+                var direction = _target.position - transform.position;
+                var target = transform.position - direction;
                 _camera.transform.LookAt(target);
                 break;
             case CameraDirectionMode.Manual:
-                _camera.transform.rotation = Quaternion.Euler(_cameraRotation);
+                transform.rotation = Quaternion.Euler(_cameraRotation);
                 break;
         }
+    }
+
+    public void SetTarget(Transform target)
+    {
+        _target = target;
     }
 }
