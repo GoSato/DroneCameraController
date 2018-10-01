@@ -296,11 +296,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e005fd1d406b8ca4b92a21945d381e84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _target: {fileID: 0}
-  _enableLookAtTarget: 1
+  _cameraDirectionMode: 0
   _cameraRotation: {x: 0, y: 0, z: 0}
   _enableReverse: 0
   _speed: 50
+  _radius: 0
+  _height: 0
 --- !u!124 &124798286206870106
 Behaviour:
   m_ObjectHideFlags: 1
