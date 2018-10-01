@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum CameraDirectionMode
+{
+    LookAtTarget,   // 被写体の方にカメラを向ける
+    LookAtOutside,  // 被写体の正反対側にカメラを向ける
+    Manual,         // カメラの向きを角度で指定する
+}
+
 /// <summary>
 /// 衛星軌道でカメラを自動で動かす
 /// </summary>
 [RequireComponent(typeof(Camera))]
 public class AutoOrbitCameraController : MonoBehaviour
 {
-    public enum CameraDirectionMode
-    {
-        LookAtTarget,   // 被写体の方にカメラを向ける
-        LookAtOutside,  // 被写体の正反対側にカメラを向ける
-        Manual,         // カメラの向きを角度で指定する
-    }
-
     [SerializeField]
     private CameraDirectionMode _cameraDirectionMode = CameraDirectionMode.LookAtTarget;
 
@@ -41,13 +41,14 @@ public class AutoOrbitCameraController : MonoBehaviour
     private Transform _target;
     private Camera _camera;
     private float _initialHeight;
+    private float _initialRadius;
 
     private void OnEnable()
     {
         _camera = GetComponent<Camera>();
         _target = new GameObject("Camera Target").transform;
         _initialHeight = transform.position.y;
-        _radius = Vector3.Distance(_target.transform.position, transform.position);
+        _initialRadius = Vector3.Distance(_target.transform.position, transform.position);
         _height = 0.0f;
     }
 
@@ -55,14 +56,11 @@ public class AutoOrbitCameraController : MonoBehaviour
     {
         var speed = _enableReverse ? -_speed : _speed;
 
-        if (_radius > 0.0f)
-        {
-            var targetToCamera = (transform.position - _target.position).normalized;
-            var cameraPos = _target.position + targetToCamera * _radius;
-            transform.position = cameraPos;
-        }
+        var targetToCamera = (transform.position - _target.position).normalized;
+        var cameraPos = _target.position + targetToCamera * (_initialRadius + (_initialRadius * _radius));
+        transform.position = cameraPos;
 
-        if(_height != 0.0f)
+        if (_height != 0.0f)
         {
             transform.position = new Vector3(transform.position.x, _initialHeight + _height, transform.position.z);
         }
@@ -89,4 +87,36 @@ public class AutoOrbitCameraController : MonoBehaviour
     {
         _target = target;
     }
+
+    #region for UI
+    public void SetCameraDirectionMode(CameraDirectionMode mode)
+    {
+        _cameraDirectionMode = mode;
+    }
+
+    public void SetCamraRotation(Vector3 rotation)
+    {
+        _cameraRotation = rotation;
+    }
+
+    public void SetEnableReverse(bool enable)
+    {
+        _enableReverse = enable;
+    }
+
+    public void SetSpeed(float speed)
+    {
+        _speed = speed;
+    }
+
+    public void SetRadius(float radius)
+    {
+        _radius = radius;
+    }
+
+    public void SetHeight(float height)
+    {
+        _height = height;
+    }
+    #endregion
 }
