@@ -48,6 +48,7 @@ public class AutoOrbitCameraController : MonoBehaviour
         _target = new GameObject("Camera Target").transform;
         _initialHeight = transform.position.y;
         _radius = Vector3.Distance(_target.transform.position, transform.position);
+        _height = 0.0f;
     }
 
     private void Update()
