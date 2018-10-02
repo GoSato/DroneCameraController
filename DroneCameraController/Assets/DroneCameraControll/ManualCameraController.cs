@@ -283,4 +283,9 @@ public class ManualCameraController : MonoBehaviour
             _cam.fieldOfView = SmoothDamp.Pow(_cam.fieldOfView, _defaultFov, 0.01f, deltaTime);
         }
     }
+
+    public void SetAxisMode(AxisMode mode)
+    {
+        _axisMode = mode;
+    }
 }

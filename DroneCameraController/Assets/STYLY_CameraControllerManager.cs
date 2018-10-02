@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum CameraControllerMode
 {
@@ -11,32 +12,53 @@ public enum CameraControllerMode
 public class STYLY_CameraControllerManager : MonoBehaviour
 {
     [SerializeField]
-    private ManualCameraController _manualController;
+    private STYLY_ManualCameraControllerUI _manualCameraControllerUI;
 
     [SerializeField]
-    private AutoOrbitCameraController _autoController;
+    private STYLY_AutoOrbitCameraControllerUI _autoOrbitCameraControllerUI;
 
-    private void Update()
+    private CameraControllerMode _curretCameraControllerMode = CameraControllerMode.Manual;
+
+    private void Start()
     {
-        if(Input.GetKeyDown(KeyCode.O))
-        {
-            UseManualCameraController();
-        }
-        else if(Input.GetKeyDown(KeyCode.P))
-        {
-            UseAutoOrbitCameraController();
-        }
+        _curretCameraControllerMode = CameraControllerMode.AutoOrbit;
+        OpenOrCloseCameraControllerUI(false);
+        _curretCameraControllerMode = CameraControllerMode.Manual;
+        OpenOrCloseCameraControllerUI(true);
+        OpenOrCloseCameraControllerUI(false, true);
     }
 
-    public void UseManualCameraController()
+    public void OnOpenManualCameraControllerUI()
     {
-        _manualController.SetActive(true);
-        _autoController.enabled = false;
+        OpenOrCloseCameraControllerUI(false);
+        _curretCameraControllerMode = CameraControllerMode.Manual;
+        OpenOrCloseCameraControllerUI(true);
     }
 
-    public void UseAutoOrbitCameraController()
+    public void OnOpenAutoOrbitCameraControllerUI()
     {
-        _manualController.SetActive(false);
-        _autoController.enabled = true;
+        OpenOrCloseCameraControllerUI(false);
+        _curretCameraControllerMode = CameraControllerMode.AutoOrbit;
+        OpenOrCloseCameraControllerUI(true);
+    }
+
+    public void OnOpenOrCloseCameraControllerUI(Toggle toggle)
+    {
+        bool active = toggle.isOn;
+
+        OpenOrCloseCameraControllerUI(active, true);
+    }
+
+    private void OpenOrCloseCameraControllerUI(bool active, bool onlyUI = false)
+    {
+        switch (_curretCameraControllerMode)
+        {
+            case CameraControllerMode.Manual:
+                _manualCameraControllerUI.SetActive(active, onlyUI);
+                break;
+            case CameraControllerMode.AutoOrbit:
+                _autoOrbitCameraControllerUI.SetActive(active, onlyUI);
+                break;
+        }
     }
 }

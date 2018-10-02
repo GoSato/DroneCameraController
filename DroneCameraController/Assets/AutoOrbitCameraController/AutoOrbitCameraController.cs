@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum CameraDirectionMode
-{
-    LookAtTarget,   // 被写体の方にカメラを向ける
-    LookAtOutside,  // 被写体の正反対側にカメラを向ける
-    Manual,         // カメラの向きを角度で指定する
-}
-
 /// <summary>
 /// 衛星軌道でカメラを自動で動かす
 /// </summary>
 [RequireComponent(typeof(Camera))]
 public class AutoOrbitCameraController : MonoBehaviour
 {
+    public enum CameraDirectionMode
+    {
+        LookAtTarget,   // 被写体の方にカメラを向ける
+        LookAtOutside,  // 被写体の正反対側にカメラを向ける
+        Manual,         // カメラの向きを角度で指定する
+    }
+
     [SerializeField]
     private CameraDirectionMode _cameraDirectionMode = CameraDirectionMode.LookAtTarget;
 

@@ -3,76 +3,53 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class STYLY_CameraControllerUI : MonoBehaviour
+public class STYLY_AutoOrbitCameraControllerUI : MonoBehaviour
 {
-    [SerializeField]
-    private ManualCameraController _manualCamraController;
-
     [SerializeField]
     private AutoOrbitCameraController _autoOrbitCameraController;
 
-    [SerializeField]
-    private GameObject _manualCameraControllerUI;
-
-    [SerializeField]
-    private GameObject _autoOrbitCameraControllerUI;
-
     private Vector3 _rotation = Vector3.zero;
 
-    private CameraControllerMode _curretCameraControllerMode = CameraControllerMode.Manual;
-
-    public void OnOpenManualCameraControllerUI()
+    private CanvasGroup _canvasGroup;
+    public CanvasGroup CanvasGroup
     {
-        OpenOrCloseCameraControllerUI(false);
-        _curretCameraControllerMode = CameraControllerMode.Manual;
-        OpenOrCloseCameraControllerUI(true);
-        _autoOrbitCameraController.enabled = false;
-        _manualCamraController.SetActive(true);
-    }
-
-    public void OnOpenAutoOrbitCameraControllerUI()
-    {
-        OpenOrCloseCameraControllerUI(false);
-        _curretCameraControllerMode = CameraControllerMode.AutoOrbit;
-        OpenOrCloseCameraControllerUI(true);
-        _manualCamraController.SetActive(false);
-        _autoOrbitCameraController.enabled = true;
-    }
-
-    public void OnOpenOrCloseCameraControllerUI(Toggle toggle)
-    {
-        bool active = toggle.isOn;
-
-        OpenOrCloseCameraControllerUI(active);
-    }
-
-    private void OpenOrCloseCameraControllerUI(bool active)
-    {
-        switch (_curretCameraControllerMode)
+        get
         {
-            case CameraControllerMode.Manual:
-                _manualCameraControllerUI.SetActive(active);
-                break;
-            case CameraControllerMode.AutoOrbit:
-                _autoOrbitCameraControllerUI.SetActive(active);
-                break;
+            if (_canvasGroup == null)
+            {
+                _canvasGroup = GetComponent<CanvasGroup>();
+            }
+            return _canvasGroup;
         }
+    }
+
+    public void SetActive(bool active, bool onlyUI = false)
+    {
+        if (!onlyUI)
+        {
+            _autoOrbitCameraController.enabled = active;
+        }
+
+        gameObject.SetActive(active);
+        CanvasGroup.alpha = active ? 1 : 0;
+        CanvasGroup.interactable = active;
+        CanvasGroup.blocksRaycasts = active;
     }
 
     public void OnSetCameraDirectionMode(Dropdown dropdown)
     {
-        CameraDirectionMode mode;
+        AutoOrbitCameraController.CameraDirectionMode mode;
         switch (dropdown.value)
         {
             case 0:
             default:
-                mode = CameraDirectionMode.LookAtTarget;
+                mode = AutoOrbitCameraController.CameraDirectionMode.LookAtTarget;
                 break;
             case 1:
-                mode = CameraDirectionMode.LookAtOutside;
+                mode = AutoOrbitCameraController.CameraDirectionMode.LookAtOutside;
                 break;
             case 2:
-                mode = CameraDirectionMode.Manual;
+                mode = AutoOrbitCameraController.CameraDirectionMode.Manual;
                 break;
         }
         _autoOrbitCameraController.SetCameraDirectionMode(mode);
