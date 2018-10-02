@@ -6,9 +6,58 @@ using UnityEngine.UI;
 public class STYLY_CameraControllerUI : MonoBehaviour
 {
     [SerializeField]
+    private ManualCameraController _manualCamraController;
+
+    [SerializeField]
     private AutoOrbitCameraController _autoOrbitCameraController;
 
+    [SerializeField]
+    private GameObject _manualCameraControllerUI;
+
+    [SerializeField]
+    private GameObject _autoOrbitCameraControllerUI;
+
     private Vector3 _rotation = Vector3.zero;
+
+    private CameraControllerMode _curretCameraControllerMode = CameraControllerMode.Manual;
+
+    public void OnOpenManualCameraControllerUI()
+    {
+        OpenOrCloseCameraControllerUI(false);
+        _curretCameraControllerMode = CameraControllerMode.Manual;
+        OpenOrCloseCameraControllerUI(true);
+        _autoOrbitCameraController.enabled = false;
+        _manualCamraController.SetActive(true);
+    }
+
+    public void OnOpenAutoOrbitCameraControllerUI()
+    {
+        OpenOrCloseCameraControllerUI(false);
+        _curretCameraControllerMode = CameraControllerMode.AutoOrbit;
+        OpenOrCloseCameraControllerUI(true);
+        _manualCamraController.SetActive(false);
+        _autoOrbitCameraController.enabled = true;
+    }
+
+    public void OnOpenOrCloseCameraControllerUI(Toggle toggle)
+    {
+        bool active = toggle.isOn;
+
+        OpenOrCloseCameraControllerUI(active);
+    }
+
+    private void OpenOrCloseCameraControllerUI(bool active)
+    {
+        switch (_curretCameraControllerMode)
+        {
+            case CameraControllerMode.Manual:
+                _manualCameraControllerUI.SetActive(active);
+                break;
+            case CameraControllerMode.AutoOrbit:
+                _autoOrbitCameraControllerUI.SetActive(active);
+                break;
+        }
+    }
 
     public void OnSetCameraDirectionMode(Dropdown dropdown)
     {
@@ -50,7 +99,7 @@ public class STYLY_CameraControllerUI : MonoBehaviour
     public void OnSetEnableReverse(Toggle toggle)
     {
         _autoOrbitCameraController.SetEnableReverse(toggle.isOn);
-    } 
+    }
 
     public void OnSetSpeed(Slider slider)
     {
@@ -66,7 +115,7 @@ public class STYLY_CameraControllerUI : MonoBehaviour
     {
         _autoOrbitCameraController.SetHeight(Mathf.Lerp(-20, 20, slider.value));
     }
-  
+
     private float StringToFloat(string value)
     {
         int i;

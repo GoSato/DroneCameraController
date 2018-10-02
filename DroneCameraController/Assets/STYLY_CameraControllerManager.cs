@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum CameraControllerMode
+{
+    Manual,
+    AutoOrbit,
+}
+
 public class STYLY_CameraControllerManager : MonoBehaviour
 {
     [SerializeField]
