@@ -5595,6 +5595,14 @@ MonoBehaviour:
   _axisMode: 1
   _smoothMode: 1
   _enableHideCursor: 0
+  _target: {fileID: 980227553}
+  _target2: {fileID: 0}
+  _xSpeed: 5
+  _ySpeed: 5
+  _yMinLimit: -360
+  _yMaxLimit: 360
+  _distanceMin: 0.5
+  _distanceMax: 15
 --- !u!1 &746176843
 GameObject:
   m_ObjectHideFlags: 0

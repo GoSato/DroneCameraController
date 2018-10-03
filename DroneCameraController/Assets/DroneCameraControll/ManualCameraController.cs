@@ -69,6 +69,29 @@ public class ManualCameraController : MonoBehaviour
     [SerializeField]
     private bool _enableHideCursor = true;
 
+    // for orbit controll
+    [SerializeField]
+    private Transform _target;
+
+    [SerializeField]
+    private float _xSpeed = 5.0f;
+    [SerializeField]
+    private float _ySpeed = 5.0f;
+
+    [SerializeField]
+    private float _yMinLimit = -360f;
+    [SerializeField]
+    private float _yMaxLimit = 360f;
+
+    [SerializeField]
+    private float _distanceMin = 0.5f;
+    [SerializeField]
+    private float _distanceMax = 15f;
+
+    private float _x = 0.0f;
+    private float _y = 0.0f;
+    private float _distance = 5.0f;
+
     private bool _active;
 
     private Camera _cam;
@@ -216,7 +239,7 @@ public class ManualCameraController : MonoBehaviour
             trigger = _hoveringSensitivity * (Input.GetAxis(InputPredefined.TRIGGER_RIGHT) + 1) / 2.0f;
         }
 
-        if (Input.GetMouseButton(1) || Input.GetKey(KeyCode.LeftAlt) && Input.GetMouseButton(0) || leftJoystick.sqrMagnitude > 0f || rightJoystick.sqrMagnitude > 0f || trigger != 0f)
+        if (Input.GetMouseButton(1) || leftJoystick.sqrMagnitude > 0f || rightJoystick.sqrMagnitude > 0f || trigger != 0f)
         {
 
             // キーボード移動
@@ -260,6 +283,31 @@ public class ManualCameraController : MonoBehaviour
             _nextPosition -= upDir * mouseDelta.y * movingSpeed * 0.1f;
             //Debug.Log("mouseDelta : " + mouseDelta);
         }
+        else if(Input.GetKey(KeyCode.LeftAlt) && Input.GetMouseButton(0))
+        {
+            if (_target)
+            {
+                _axisMode = AxisMode.Local;
+                _smoothMode = SmoothMode.Quick;
+
+                _x += Input.GetAxis(InputPredefined.MOUSE_X) * _xSpeed;
+                _y -= Input.GetAxis(InputPredefined.MOUSE_Y) * _ySpeed;
+
+                _y = ClampAngle(_y, _yMinLimit, _yMaxLimit);
+
+                Quaternion rotation = Quaternion.Euler(_y, _x, 0);
+
+                _distance = Vector3.Distance(transform.position, _target.position);
+
+                //_distance = Mathf.Clamp(_distance - Input.GetAxis("Mouse ScrollWheel") * 5, _distanceMin, _distanceMax);
+
+                Vector3 negDistance = new Vector3(0.0f, 0.0f, -_distance);
+                Vector3 position = rotation * negDistance + _target.position;
+
+                transform.rotation = rotation;
+                _nextPosition = position;
+            }
+        }
 
         if (Input.mousePosition.x < Screen.width && Input.mousePosition.x > 0 && Input.mousePosition.y < Screen.height && Input.mousePosition.y > 0)
         {
@@ -287,5 +335,28 @@ public class ManualCameraController : MonoBehaviour
     public void SetAxisMode(AxisMode mode)
     {
         _axisMode = mode;
+    }
+
+    public void SetOrbitTarget(Transform target)
+    {
+        _target = target;
+
+        InitOrbit();
+    }
+
+    private void InitOrbit()
+    {
+        Vector3 angles = transform.eulerAngles;
+        _x = angles.y;
+        _y = angles.x;
+    }
+
+    public static float ClampAngle(float angle, float min, float max)
+    {
+        if (angle < -360F)
+            angle += 360F;
+        if (angle > 360F)
+            angle -= 360F;
+        return Mathf.Clamp(angle, min, max);
     }
 }
