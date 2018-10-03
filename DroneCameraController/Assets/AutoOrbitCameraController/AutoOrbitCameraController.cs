@@ -52,7 +52,7 @@ public class AutoOrbitCameraController : MonoBehaviour
         _height = 0.0f;
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         var speed = _enableReverse ? -_speed : _speed;
 
