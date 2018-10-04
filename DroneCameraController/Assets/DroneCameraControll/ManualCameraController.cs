@@ -69,7 +69,10 @@ public class ManualCameraController : MonoBehaviour
     [SerializeField]
     private bool _enableHideCursor = true;
 
-    // for orbit controll
+    [Space(3)]
+    [Header("ManualOrbit設定")]
+    [Space(2)]
+
     [SerializeField]
     private Transform _target;
 
@@ -302,6 +305,9 @@ public class ManualCameraController : MonoBehaviour
                 //_distance = Mathf.Clamp(_distance - Input.GetAxis("Mouse ScrollWheel") * 5, _distanceMin, _distanceMax);
 
                 Vector3 negDistance = new Vector3(0.0f, 0.0f, -_distance);
+
+
+
                 Vector3 position = rotation * negDistance + _target.position;
 
                 transform.rotation = rotation;
