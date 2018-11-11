@@ -207,11 +207,11 @@ public class DroneCameraController : MonoBehaviour
             Input.GetAxis(InputPredefined.VERTICAL_RIGHT));
 
         var trigger = 0f;
-        if (Input.GetButton(InputPredefined.TRIGGER_LEFT_PRESS))
+        if (Input.GetAxis(InputPredefined.TRIGGER_LEFT) > 0f)
         {
             trigger = -_hoveringSensitivity * (Input.GetAxis(InputPredefined.TRIGGER_LEFT) + 1) / 2.0f;
         }
-        else if (Input.GetButton(InputPredefined.TRIGGER_RIGHT_PRESS))
+        else if (Input.GetAxis(InputPredefined.TRIGGER_RIGHT) > 0f)
         {
             trigger = _hoveringSensitivity * (Input.GetAxis(InputPredefined.TRIGGER_RIGHT) + 1) / 2.0f;
         }
