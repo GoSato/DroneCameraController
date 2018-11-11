@@ -5,6 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/ScreenRecorder/ScreenRecorder.unity
     guid: c5dd0fa0bcc8c0940859e945212b2e17
+  - enabled: 1
+    path: Assets/Controller Tester/Scenes/controllerTest.unity
+    guid: f4b5988cbcf23d04a83de3a482f540d8
